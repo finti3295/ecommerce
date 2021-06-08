@@ -1,0 +1,174 @@
+
+<div class="d-flex justify-content-md-center">
+    <div class="col-sm-8 col-sm-offset-2">
+        <h2>Create account</h2>
+        <form [formGroup]="signUpForm" (ngSubmit)="onSubmit()">
+            <div class="form-group row mb-3">
+                <div class="col-md-6">
+                    <label for="surname">First name</label>
+
+                    <input type="text" id="surname" class="form-control" formControlName="surname">
+
+                </div>
+                <div class="col-md-6 ">
+                    <label for="name">Last name</label>
+                    <input type="text" id="name" class="form-control" formControlName="name">
+
+                </div>
+            </div>
+
+
+
+            <div class="form-group mb-3">
+                <label for="email">Email</label>
+                <input type="text" id="email" class="form-control" formControlName="email"
+                    placeholder="you@example.com">
+            </div>
+
+            <div class="form-group row mb-3">
+                <div class="col-md-6">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" class="form-control" formControlName="password">
+
+                </div>
+                <div class="col-md-6">
+                    <label for="password">Re-enter password</label>
+                    <input type="password" id="confirmPassword" class="form-control" formControlName="confirmPassword" >
+                    <div *ngIf="f.confirmPassword.touched && f.confirmPassword.invalid"
+                     class="text-danger d-flex align-items-center bg-transparent " role="alert" style="font-size: 12px;
+                     line-height: 15px">
+                         <i class="bi bi-exclamation-diamond me-1"></i>
+                        <div *ngIf="f.confirmPassword.errors.mustMatch" >Passwords must match.</div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="form-group mb-3">
+                <label for="email">phone Number</label>
+                <input type="text" id="phoneNumber" class="form-control" formControlName="phoneNumber">
+            </div>
+
+
+            <div class="mb-3">
+                <label for="address">Address</label>
+                <input type="text" class="form-control" id="address" placeholder="1234 Main St" formControlName="address">
+                <div class="invalid-feedback">
+                    Please enter your shipping address.
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="address2">Address 2 <span class="text-muted">(Optional)</span></label>
+                <input type="text" class="form-control" id="address2" placeholder="Apartment or suite" formControlName="address2">
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-5 mb-3">
+                    <label for="country">Country</label>
+                    <select  class="form-select form-select-md "  id="country" formControlName="country"
+                    (change)="FillCities()" [(ngModel)]="SelCountryId">
+                        <option  [ngValue]="null" disabled>Choose...</option>
+                        <option   *ngFor="let c of countries" [ngValue]="c">{{c.name}}</option>
+                    </select>
+                    <div class="invalid-feedback">
+                        Please select a valid country.
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="state">City</label>
+                    <select class="form-select form-select-md  " id="state" formControlName="state">
+                        <option [ngValue]="null" disabled>Choose...</option>
+                        <option   *ngFor="let a of cities" [ngValue]="a.name">{{a.name}}</option>
+                    </select>
+                    <div class="invalid-feedback">
+                        Please provide a valid state.
+                    </div>
+                </div>
+                <div class=" col-md-3 mb-3">
+                    <label for="zip">Zip</label>
+                    <input type="text" class="form-control" id="zip" placeholder="" formControlName="zip">
+                    <div class="invalid-feedback">
+                        Zip code required.
+                    </div>
+                </div>
+            </div>
+            <hr class="mb-4">
+            <div  class="custom-control custom-checkbox mb-3">
+                <input type="checkbox" class="custom-control-input" id="same-address"  [(ngModel)]="hideBilling"  [ngModelOptions]="{standalone: true}">
+                <label class="custom-control-label" for="same-address">Shipping address is the same as my billing
+                    address</label>
+            </div>
+
+            <div class="mb-3" *ngIf="!hideBilling">
+                <label class="mb-3" for="address">Billing Address</label>
+                <input type="text" class="form-control" id="address" placeholder="1234 Main St" formControlName="billingAddress">
+                <div class="invalid-feedback">
+                    Please enter your billing address.
+                </div>
+            </div>
+          
+            <hr class="mb-4">
+
+            <h4 class="mb-3">Payment</h4>
+
+            <div class="d-block my-3">
+                <div class="custom-control custom-radio">
+                    <input id="credit" name="paymentMethod" type="radio" class="custom-control-input" checked required>
+                    <label class="custom-control-label" for="credit">Credit card</label>
+                </div>
+                <div class="custom-control custom-radio">
+                    <input id="debit" name="paymentMethod" type="radio" class="custom-control-input" required>
+                    <label class="custom-control-label" for="debit">Debit card</label>
+                </div>
+                <div class="custom-control custom-radio">
+                    <input id="paypal" name="paymentMethod" type="radio" class="custom-control-input" required>
+                    <label class="custom-control-label" for="paypal">PayPal</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="cc-name">Name on card</label>
+                    <input type="text" class="form-control" id="cc-name" placeholder="" required>
+                    <small class="text-muted">Full name as displayed on card</small>
+                    <div class="invalid-feedback">
+                        Name on card is required
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="cc-number">Credit card number</label>
+                    <input type="text" class="form-control" id="cc-number" placeholder="" required>
+                    <div class="invalid-feedback">
+                        Credit card number is required
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3 mb-3">
+                    <label for="cc-expiration">Expiration</label>
+                    <input type="text" class="form-control" id="cc-expiration" placeholder="" required>
+                    <div class="invalid-feedback">
+                        Expiration date required
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="cc-cvv">CVV</label>
+                    <input type="text" class="form-control" id="cc-cvv" placeholder="" required>
+                    <div class="invalid-feedback">
+                        Security code required
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="d-grid gap-2">
+
+                <hr class="mb-4">
+                <button class="btn btn-primary btn-lg btn-block" type="submit" [disabled]="signUpForm.invalid">Continue
+                    to checkout</button>
+            </div>
+        </form>
+        <p class="text-danger">{{errorMessage}}</p>
+    </div>
+</div>

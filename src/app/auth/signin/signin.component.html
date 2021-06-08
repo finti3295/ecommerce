@@ -1,0 +1,27 @@
+<div class="divbody" >
+  
+
+        <form class="mform-signin"   [formGroup]="signInForm" (ngSubmit)="onSubmit()">
+           
+            <img class="mb-4" src="assets/leaf.png" alt="" width="72" height="72">
+            <h1 class="h3 mb-3 font-weight-normal text-center">Please sign in</h1>
+           
+            <input type="email" id="email" class="form-control sr-only my-3" placeholder="Email address" required autofocus formControlName="email">
+          
+            <input type="password" formControlName="password" id="inputPassword" class="form-control my-3" placeholder="Password" required>
+            <p class="text-danger">{{errorMessage}}</p>
+            <div class="checkbox mb-3">
+              <label>
+                <input type="checkbox" value="remember-me"> Remember me
+              </label>
+            </div>
+            <div class="d-grid gap-2">
+            <button class="btn btn-lg btn-primary btn-block" type="submit"  [disabled]="signInForm.invalid">Sign in</button>
+            </div> 
+            <p class="mt-5 mb-3 text-muted">&copy; 2017-2020</p>
+
+        </form>
+      
+   </div>   
+
+

@@ -1,0 +1,15 @@
+.OutlinedButton {
+     background-color: transparent;
+     border-color: transparent !important;
+  }
+.OutlinedButton:hover {
+    background-color: transparent; /* Green */
+    border-radius: 0.3rem;
+    border-color: black !important;
+}
+.center {
+  display: flex;
+  justify-content: center;
+ 
+}
+  

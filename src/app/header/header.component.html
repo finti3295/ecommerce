@@ -1,0 +1,58 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" routerLink="products">
+      <img  class="img-fluid" src="assets/leaf.png" alt="" width="22" height="22">
+    </a>
+
+    <div class="nav-fill" id="navbarSupportedContent" style=" width:75%;">
+
+      <form class="d-flex nav-fill nav-searchbar nav-progressive-attribute">
+        <input class="form-control me-2 nav-fill" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+      </form>
+
+    </div>
+
+
+    <ul class="nav navbar-nav">
+
+      <li class="nav-item dropdown " >
+   
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+          aria-expanded="false">
+          Hello <div *ngIf="isAuth">{{actualUser.surname}}</div>
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <li class="nav-item" routerLinkActive="active" >
+     {{isAuth}}
+              <div class=" center" >
+               
+              <a type="button" role="button" class="btn  btn-warning" style="width: 8rem;"
+              routerLink="auth/signin">Signin</a>           
+            
+            </div>  
+            <div class=" center"  style="width: auto;">
+              <p style="font-size: 0.7em;">New customer? <a routerLink="auth/signup" >start here</a> </p>
+            </div>      
+
+          </li>
+          <li><hr class="dropdown-divider" *ngIf="!isAuth"></li>
+          <li><a class="dropdown-item" href="#">Account</a></li>
+          <li><a class="dropdown-item" href="#">My orders</a></li>
+          <li><a class="dropdown-item" routerLink="product/new" *ngIf="isAuth">Manage products</a></li>
+      
+          <li><a class="dropdown-item" (click)="onSignOut()" *ngIf="isAuth">Logout</a></li>
+        </ul>
+      </li>
+
+    </ul>
+    <button type="button" class="OutlinedButton">
+      <i class="bi bi-cart-fill"></i>
+     
+
+      <a routerLink="products"> <span class="badge badge-secondary badge-pill ms-1" style="background-color: blue;">3</span></a>
+    </button>
+  </div>
+
+
+</nav>

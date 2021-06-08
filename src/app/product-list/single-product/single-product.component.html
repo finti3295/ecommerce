@@ -1,0 +1,58 @@
+<div class="row">
+    <div class="col-sm-8 col-sm-offset-2">
+        <h2>Add a product</h2>
+        <form [formGroup]="productForm" (ngSubmit)="onSaveProduct()">
+            <div class="form-group">
+                <label for="title">Titre</label>
+                <input type="text" class="form-control" id="title" formControlName="title">                
+            </div>
+            <div class="form-group">
+                <label for="author">Content</label>
+                <input type="text" class="form-control" id="content" formControlName="content">                
+            </div>
+
+            <div class="form-group">
+                <h4 >Ajouter une photo</h4>
+                <input type="file" class="form-control" accept="image/*" (change)="selectFile($event)">  
+          
+            </div>
+            <div class="col-4">
+                <button class="btn btn-success btn-sm" [disabled]="!selectedFiles" (click)="upload()">
+                  Upload
+                </button>
+              </div>
+     
+            
+            <div *ngIf="currentFile" class="progress my-3">
+              <div
+                class="progress-bar progress-bar-info progress-bar-striped"
+                role="progressbar"
+                attr.aria-valuenow="{{ progress }}"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                [ngStyle]="{ width: progress + '%' }"
+              >
+                {{ progress }}%
+              </div>
+            </div>
+            
+            <div *ngIf="message" class="alert alert-secondary" role="alert">{{ message }}</div>
+            
+            <div class="card mt-3">
+              <div class="card-header">List of Files</div>
+              <ul
+                class="list-group list-group-flush"
+                *ngFor="let file of fileInfos | async"
+              >
+                <li class="list-group-item">
+                  <a href="{{ file.url }}">{{ file.name }}</a>
+                </li>
+              </ul>
+            </div>
+            <button class="btn btn-success" [disabled]="productForm.invalid || fileIsUploading" type="submit" >
+                Enregistrer
+            </button>
+        </form>
+    </div>
+</div> 
+
