@@ -23,7 +23,7 @@ const appRoutes: Routes = [
   {path: 'product/new', canActivate: [AuthGuardService],component: ProductFormComponent},
   {path: 'product/view/:id', canActivate: [AuthGuardService],component: SingleProductComponent},
   {path: '', redirectTo: 'products', pathMatch: 'full'},
-  {path: '**', redirectTo: 'posts'}
+  {path: '**', redirectTo: 'products'}
   ]
 @NgModule({
   declarations: [

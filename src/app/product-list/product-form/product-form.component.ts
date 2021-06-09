@@ -31,7 +31,7 @@ export class ProductFormComponent implements OnInit {
       (u: User) => {
        // console.log('u id '+u.userId+ ' Name'+ u.name);
         this.actualUser = u;
-        this.productService.emitUser();
+        this.productService.EmitAuth();
       });
       this.actualUser = this.productService.actualUser;
       //console.log('this.actualUser id '+this.actualUser.userId+ ' Name'+ this.actualUser.name);

@@ -25,14 +25,11 @@ export class ProductsService {
 
   }
 
-  emitUser() {
-    this.userSubject.next(this.actualUser);
-  }
 
   EmitAuth() {
     //console.log('EmitAuth '+this.isAuth);
     this.AuthSubject.next(this.isAuth);
-   this.emitUser();
+   this.userSubject.next(this.actualUser);
   }
 
 
@@ -53,13 +50,13 @@ export class ProductsService {
               
                   this.actualUser = u;               
                   this.isAuth = true;
-                  this.emitUser();
+                  this.EmitAuth();
                   resolve(registeredUser);
-                  //console.log('Ok '+m);
+                  console.log('CreateNewUser Ok '+m);
                 },
                 (error1) => {         
                   this.isAuth = false;
-                  this.emitUser();
+                  this.EmitAuth();
                   reject(error1);
                   //console.log('NOk '+error);
              
@@ -76,31 +73,6 @@ export class ProductsService {
         )
       }
     );
-
-
-
-    // //console.log('CreateNewUser '+u);
-    // return new Promise(
-    //   (resolve, reject) => {
-    //     firebase.database().ref("users").child(u.userId).set(u).then(
-    //       (m) => {
-    //         this.actualUser = u;
-    //         this.emitUser();
-    //         this.isAuth = true;
-    //         this.EmitAuth();
-    //         resolve(true);
-    //         //console.log('Ok '+m);
-    //       },
-    //       (error) => {
-    //         reject(error);
-    //         this.isAuth = false;
-    //         this.EmitAuth();
-    //         //console.log('NOk '+error);
-    //         reject();
-    //       }
-    //     )
-    //   }
-    // )
   }
 
 
@@ -116,8 +88,7 @@ export class ProductsService {
               
                   console.log('SignInUser Ok '+  this.actualUser.name);
                   this.isAuth = true;
-                  this.emitUser()
-                  //this.EmitAuth();
+                  this.EmitAuth();
                   resolve(m);                
           
               }, (error) => {
@@ -135,34 +106,12 @@ export class ProductsService {
         )
       }
     )
-    // return new Promise(
-    //   (resolve, reject) => {
-    //     firebase.database().ref('/users/' + User.decode(email)).once('value').then(
-    //       (data) => {
-    //         this.actualUser = data.val();
-    //         if(this.actualUser.password != password){
-    //           reject("Password wrong");
-    //         }else{
-    //           console.log('SignInUser Ok '+  this.actualUser.name);
-    //           this.isAuth = true;
-    //           //this.emitUser()
-    //           this.EmitAuth();
-    //           resolve(data.val());
-    //         }
-      
-    //       }, (error) => {
-    //         this.isAuth = false;
-    //         this.EmitAuth();
-    //         reject(error);
-    //       }
-    //     )
-
-    //   }
-    // )
+   
   }
 
   SignOutUser() {
     firebase.auth().signOut();
+    console.log('  firebase.auth().signOut() '+  this.isAuth);
   }
 
 

@@ -12,7 +12,7 @@ import { ProductsService } from '../services/products.service';
 })
 export class HeaderComponent implements OnInit {
 
-actualUser: User = new User("","","","","","","","","");
+actualUser: User = new User();
 userSubscription = new Subscription;
 
  isAuth: boolean = false;
@@ -21,15 +21,20 @@ authSubscription = new Subscription;
 
   ngOnInit() {
    // console.log("Authenticated "+this.isAuth);
-   this.isAuth = this.productSevice.isAuth
-  
+   //this.isAuth = this.productSevice.isAuth  
 
     this.userSubscription = this.productSevice.userSubject.subscribe(
       (u: User) => {
         this.actualUser = u;
 
-      }
-      
+      }      
+    )
+
+    this.authSubscription = this.productSevice.AuthSubject.subscribe(
+      (u: boolean) => {
+        this.isAuth = u;
+
+      }      
     )
   }
 

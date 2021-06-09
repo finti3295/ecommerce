@@ -18,13 +18,21 @@
 
       <li class="nav-item dropdown " >
    
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
-          aria-expanded="false">
-          Hello <div *ngIf="isAuth">{{actualUser.surname}}</div>
+       
+
+    
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+          aria-expanded="false" style="font-size: 0.7em;">
+          <div class=" center">
+          Hello {{ isAuth ? " "+ actualUser.surname : ""}}
+        </div> 
         </a>
+    
+
+
+
         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <li class="nav-item" routerLinkActive="active" >
-     {{isAuth}}
+          <li  *ngIf="!isAuth" class="nav-item" routerLinkActive="active" >
               <div class=" center" >
                
               <a type="button" role="button" class="btn  btn-warning" style="width: 8rem;"
