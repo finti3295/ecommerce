@@ -3,7 +3,7 @@
         <h2>Add a product</h2>
         <form [formGroup]="productForm" (ngSubmit)="onSaveProduct()">
             <div class="form-group">
-                <label for="title"><Title></Title></label>
+                <label for="title">Title</label>
                 <input type="text" class="form-control" id="title" formControlName="title">                
             </div>
             <div class="form-group">
@@ -14,48 +14,16 @@
               <label for="price">Price</label>
               <input type="number" class="form-control" id="price" formControlName="price">                
           </div>
+          <div class="form-group">
+            <label for="content">photo</label>
 
-            <div class="form-group">
-                <h4 >Add photo</h4>
-                <input type="file" class="form-control" accept="image/*" (change)="selectFile($event)">  
-          
-            </div>
-            <div class="col-4">
-                <button class="btn btn-success btn-sm" [disabled]="!selectedFiles" (click)="upload()">
-                  Upload
-                </button>
-              </div>
-     
-            
-            <div *ngIf="currentFile" class="progress my-3">
-              <div
-                class="progress-bar progress-bar-info progress-bar-striped"
-                role="progressbar"
-                attr.aria-valuenow="{{ progress }}"
-                aria-valuemin="0"
-                aria-valuemax="100"
-                [ngStyle]="{ width: progress + '%' }"
-              >
-                {{ progress }}%
-              </div>
-            </div>
-            
-            <div *ngIf="message" class="alert alert-secondary" role="alert">{{ message }}</div>
-            
-            <div class="card mt-3">
-              <div class="card-header">List of Files</div>
-              <ul
-                class="list-group list-group-flush"
-                *ngFor="let file of fileInfos | async"
-              >
-                <li class="list-group-item">
-                  <a href="{{ file.url }}">{{ file.name }}</a>
-                </li>
-              </ul>
-            </div>
-            <button class="btn btn-success" [disabled]="productForm.invalid || fileIsUploading" type="submit" >
-                Save
-            </button>
+            <app-upload-form></app-upload-form>
+          </div>
+          <div class="form-group">
+           
+            <app-upload-list></app-upload-list>
+          </div>
+        
         </form>
     </div>
 </div> 

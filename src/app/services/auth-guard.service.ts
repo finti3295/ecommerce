@@ -9,8 +9,12 @@ import { ProductsService } from './products.service';
   providedIn: 'root'
 })
 export class AuthGuardService implements CanActivate {
-  isAuth: boolean = false;
-  AuthSubject = new Subject<boolean>();
+  // isAuth: boolean = false;
+  // AuthSubject = new Subject<boolean>();
+  //   EmitAuth() {
+  //   console.log('EmitAuth '+this.isAuth);
+  //   this.AuthSubject.next(this.isAuth);
+  // }
 
   constructor(private router: Router) {
   
@@ -21,15 +25,22 @@ export class AuthGuardService implements CanActivate {
         firebase.auth().onAuthStateChanged(
           (user) => {
             if(user){
+              //this.isAuth = true;
+              console.log('canActivate ok '+  user);
+            // this. EmitAuth();
               resolve(true);
             }else{
               this.router.navigate(['/auth', 'signin']);
+              //this.isAuth = false
+             // this.EmitAuth
               resolve(false);
             }
           }
         )
         })
   }
+
+
 
   ngOnInit() {
 

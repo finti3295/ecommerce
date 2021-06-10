@@ -36,13 +36,14 @@ export class SigninComponent implements OnInit {
   onSubmit(){
     const email = this.signInForm.get('email').value;
     const password = this.signInForm.get('password').value;
-    console.log(' signin passwordr'+  password);
+
     this.productService.SignInUser(email, password).then(
       () => {
-        this.router.navigate(['/products']);
+        //console.log(' signin passwordr ok');
+        this.router.navigate(['/products']);      
       },
       (error:string) => {
-        console.log(' signin error'+  error);
+        //console.log(' signin error'+  error);
         this.errorMessage = error
       }
     )

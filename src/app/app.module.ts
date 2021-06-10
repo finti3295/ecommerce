@@ -15,6 +15,17 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http'
 import { RouterModule, Routes } from '@angular/router';
 import { BrowserModule } from '@angular/platform-browser';
+import { UploadFormComponent } from './upload-form/upload-form.component';
+import { UploadDetailsComponent } from './upload-details/upload-details.component';
+import { UploadListComponent } from './upload-list/upload-list.component';
+
+
+import { AngularFireModule } from '@angular/fire';
+import { AngularFireDatabaseModule } from '@angular/fire/database';
+import { AngularFireStorageModule } from '@angular/fire/storage';
+import { environment } from '../environments/environment';
+
+
 
 const appRoutes: Routes = [
   {path: 'auth/signup', component: SignupComponent},
@@ -33,7 +44,10 @@ const appRoutes: Routes = [
     SingleProductComponent,
     SigninComponent,
     SignupComponent,
-    HeaderComponent
+    HeaderComponent,
+    UploadFormComponent,
+    UploadDetailsComponent,
+    UploadListComponent
   ],
   imports: [
     BrowserModule,
@@ -41,6 +55,9 @@ const appRoutes: Routes = [
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
+     AngularFireModule.initializeApp(environment.firebase),
+    AngularFireDatabaseModule,
+    AngularFireStorageModule,
     RouterModule.forRoot(appRoutes)
   ],
   providers: [

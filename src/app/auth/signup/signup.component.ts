@@ -31,6 +31,7 @@ export class SignupComponent implements OnInit {
 
   ngOnInit() {
     this.initForm();
+    this.nodeFetchService.getCountries();
    
     this.countriesSubscription = this.nodeFetchService.countrySubject.subscribe(
     (c: any[]) => {

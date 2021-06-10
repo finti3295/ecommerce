@@ -60,13 +60,13 @@ export class SingleProductComponent implements OnInit {
     //console.log('onUploadFile');
     if(file == null)return;
     this.fileIsUploading = true;
-    this.productService.uploadFile(file).then(
-      (u: any) => {
-          this.fileUrl = u;
-            this.fileIsUploading = false;
-              this.fileUploaded = true;
-            }
-    );
+    // this.productService.uploadFile(file).then(
+    //   (u: any) => {
+    //       this.fileUrl = u;
+    //         this.fileIsUploading = false;
+    //           this.fileUploaded = true;
+    //         }
+    // );
 
   }
 
@@ -103,7 +103,7 @@ export class SingleProductComponent implements OnInit {
       if (file) {
         this.currentFile = file;
   
-        this.productService.uploadFile(this.currentFile);
+        // this.productService.uploadFile(this.currentFile);
    
   }}
 
