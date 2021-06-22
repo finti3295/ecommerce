@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Observable, Subscription } from 'rxjs';
-import { FileUpload } from 'src/app/helpers/file-upload';
+import {  Subscription } from 'rxjs';
 import { Product } from 'src/app/models/product.model';
 import { User } from 'src/app/models/user.model';
 import { FileUploadService } from 'src/app/services/file-upload.service';
 import { ProductsService } from 'src/app/services/products.service';
+import { map } from 'rxjs/operators';
+import { FileUpload } from 'src/app/helpers/file-upload';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-product-form',
@@ -20,18 +22,30 @@ export class ProductFormComponent implements OnInit {
   actualUser: User = new User();
   userSubscription = new Subscription;
 
+  fileUploads: any[] = [];
+
   constructor(private formBuilder: FormBuilder,
-    private router: Router, private productSevice: ProductsService, private uploadService: FileUploadService) { }
+    private router: Router, private productSevice: ProductsService, private authService: AuthService,
+     private uploadService: FileUploadService) { }
 
   ngOnInit() {
     this.initForm();
-    this.userSubscription = this.productSevice.userSubject.subscribe(
+    this.uploadService.getFiles(6).snapshotChanges().pipe(
+      map(changes =>
+        // store the key
+        changes.map(c => ({ key: c.payload.key, ...c.payload.val() }))
+      )
+    ).subscribe(fileUploads => {
+      this.fileUploads = fileUploads;
+    });
+
+    this.userSubscription = this.authService.userSubject.subscribe(
       (u: User) => {
        // console.log('u id '+u.userId+ ' Name'+ u.name);
         this.actualUser = u;
-        this.productSevice.emitUser();
+        this.authService.emitUser();
       });
-      this.actualUser = this.productSevice.actualUser;
+      this.actualUser = this.authService.actualUser;
       //console.log('this.actualUser id '+this.actualUser.userId+ ' Name'+ this.actualUser.name);
   }
 
@@ -52,123 +66,13 @@ export class ProductFormComponent implements OnInit {
 
     const newProduct = new Product(title, content, price, this.actualUser.userId);
 
+    if(this.fileUploads !== undefined)
+        newProduct.photo = this.fileUploads.map(x => (<FileUpload>x).url)
 
-    // if (this.selectedFiles && this.selectedFiles.length > 0) {
-    //   this.onUploadFile(this.selectedFiles.item(0))
 
-    //   newProduct.photo = this.fileUrl;
-    // }
     this.productSevice.createNewProduct(newProduct);
     this.router.navigate(['/products']);
   }
-
-  //#region Upload
-  // selectedFiles?: FileList;
-  // currentFileUpload: FileUpload = new FileUpload(null);
-  // percentage: number = 0;
-
-  // selectFile(event: any): void {
-  //   this.selectedFiles = event.target.files;
-  // }
-
-  // upload(): void {
-  //   if(this.selectedFiles !== undefined){
-  //     const file = this.selectedFiles.item(0);
-  //     this.selectedFiles = undefined;
-  
-  //     this.currentFileUpload = new FileUpload(file);
-  //     this.uploadService.pushFileToStorage(this.currentFileUpload).subscribe(
-  //       percentage => {
-  //         if(percentage !== undefined)
-  //                   this.percentage = Math.round(percentage);
-  //       },
-  //       error => {
-  //         console.log(error);
-  //       }
-  //     );
-  //   }
-
-  // }
-
-  //#endregion
-
-  // selectFile(event: any): void {
-  //   this.selectedFiles = event.target.files;
-
-  //   if (this.selectedFiles) {
-  //     const file: File | null = this.selectedFiles.item(0);
-  //     console.log('upload');
-  //     if (file) {
-  //       this.fileIsUploading = true;
-  //       this.productService.uploadFile(file).then(
-  //         (u: any) => {
-  //           console.log('upload fileUrl '+u);
-  //           this.fileUrl = u;
-  //           this.fileIsUploading = false;
-  //           this.fileUploaded = true;
-  //          // this.fileInfos.
-  //         }
-  //       );
-  //       // this.currentFile = file;
-
-  //       // this.productService.uploadFile(this.currentFile);
-
-  //     }
-  //   }
-    
-  //   //console.log('selectFile '+   this.selectedFiles?.length );
-  // }
-
-
-  // upload(): void {
-  //   this.progress = 0;
-
-  //   if (this.selectedFiles) {
-  //     const file: File | null = this.selectedFiles.item(0);
-  //     console.log('upload');
-  //     if (file) {
-  //       this.fileIsUploading = true;
-  //       this.productService.uploadFile(file).then(
-  //         (u: any) => {
-  //           console.log('upload fileUrl '+u);
-  //           this.fileUrl = u;
-  //           this.fileIsUploading = false;
-  //           this.fileUploaded = true;
-  //         }
-  //       );
-  //       // this.currentFile = file;
-
-  //       // this.productService.uploadFile(this.currentFile);
-
-  //     }
-  //   }
-  // }
-
-  // onUploadFile(file: File | null) {
-  //   //console.log('onUploadFile');
-  //   if (file == null) return;
-  //   this.fileIsUploading = true;
-  //   this.productService.uploadFile(file).then(
-  //     (u: any) => {
-  //       this.fileUrl = u;
-  //       this.fileIsUploading = false;
-  //       this.fileUploaded = true;
-  //     }
-  //   );
-
-  // }
-
-
-
-  // selectedFiles?: FileList;
-  // currentFile?: File;
-  // progress = 0;
-  // message = '';
-
-  // fileInfos?: Observable<any>;
-
-
-
 
 
 }

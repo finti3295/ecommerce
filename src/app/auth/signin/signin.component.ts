@@ -16,7 +16,7 @@ export class SigninComponent implements OnInit {
   errorMessage!: string; 
 
   constructor(private formBuilder: FormBuilder,
-              private productService: ProductsService,
+              private productService: ProductsService, private AuthSerice: AuthService,
               private router: Router) { }
 
   ngOnInit() {
@@ -37,7 +37,7 @@ export class SigninComponent implements OnInit {
     const email = this.signInForm.get('email').value;
     const password = this.signInForm.get('password').value;
 
-    this.productService.SignInUser(email, password).then(
+    this.AuthSerice.SignInUser(email, password).then(
       () => {
         //console.log(' signin passwordr ok');
         this.router.navigate(['/products']);      

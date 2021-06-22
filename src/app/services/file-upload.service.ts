@@ -1,8 +1,4 @@
 import { Injectable } from '@angular/core';
-import firebase from 'firebase';
-
-
-
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { FileUpload } from '../helpers/file-upload';

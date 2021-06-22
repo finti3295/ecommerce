@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { Product } from 'src/app/models/product.model';
 import { User } from 'src/app/models/user.model';
+import { AuthService } from 'src/app/services/auth.service';
 import { ProductsService } from 'src/app/services/products.service';
 
 @Component({
@@ -22,12 +23,12 @@ export class SingleProductComponent implements OnInit {
   userSubscription = new Subscription;
 
   constructor(private formBuilder: FormBuilder,
-              private productService: ProductsService,
+              private authService: AuthService,
               private router: Router, private productSevice: ProductsService) { }
 
   ngOnInit() {
     this.initForm();
-    this.userSubscription = this.productSevice.userSubject.subscribe(
+    this.userSubscription = this.authService.userSubject.subscribe(
       (u: User) => {
         this.actualUser = u;
       });
@@ -50,9 +51,9 @@ export class SingleProductComponent implements OnInit {
    // console.log("url ",this.fileUrl);
     if(this.fileUrl && this.fileUrl !== ''){
       console.log(this.fileUrl);
-      newProduct.photo = this.fileUrl;
+    //  newProduct.photo = this.fileUrl;
     }
-    this.productService.createNewProduct(newProduct);
+    this.productSevice.createNewProduct(newProduct);
     this.router.navigate(['/products']);
   }
 

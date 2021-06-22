@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FileUploadService } from '../services/file-upload.service';
 import { map } from 'rxjs/operators';
 
@@ -9,7 +9,7 @@ import { map } from 'rxjs/operators';
 })
 export class UploadListComponent implements OnInit {
 
-  fileUploads: any[] = [];
+   fileUploads: any[] = [];
 
   constructor(private uploadService: FileUploadService) { }
 

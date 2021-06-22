@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { MustMatch } from 'src/app/helpers/must-match.validator';
 import { City, Country } from 'src/app/models/country.model';
+import { AuthService } from 'src/app/services/auth.service';
 import { NodefetchService } from 'src/app/services/nodefetch.service';
 import { ProductsService } from 'src/app/services/products.service';
 
@@ -26,7 +27,7 @@ export class SignupComponent implements OnInit {
   SelCountryId:Country = new Country(); 
 
 
-  constructor(private formBuilder: FormBuilder, private productService: ProductsService,
+  constructor(private formBuilder: FormBuilder, private productService: ProductsService, private authService: AuthService,
      private nodeFetchService: NodefetchService, private router: Router) { }
 
   ngOnInit() {
@@ -104,7 +105,7 @@ this.nodeFetchService.getCities(this.SelCountryId.objectId).then(
     if(this.hideBilling === false)
      billingAddress = this.signUpForm.get('billingAddress').value;
     //console.log('onSubmit CreateNewUser');
-    this.productService.CreateNewUser(email, name, surname, phoneNumber, password,address, zip, country.name,state, address2, billingAddress).then(
+    this.authService.CreateNewUser(email, name, surname, phoneNumber, password,address, zip, country.name,state, address2, billingAddress).then(
       () => {
         //console.log('signup Ok ');
         this.router.navigate(['/products']);

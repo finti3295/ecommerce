@@ -18,20 +18,20 @@ userSubscription = new Subscription;
 
  isAuth: boolean = false;
 authSubscription = new Subscription;
-  constructor(private productSevice: ProductsService) { }
+  constructor(private productSevice: ProductsService, private authService: AuthService) { }
 
   ngOnInit() {
    // console.log("Authenticated "+this.isAuth);
    //this.isAuth = this.productSevice.isAuth  
 
-    this.userSubscription = this.productSevice.userSubject.subscribe(
+    this.userSubscription = this.authService.userSubject.subscribe(
       (u: User) => {
         this.actualUser = u;
 
       }      
     )
 
-    this.authSubscription = this.productSevice.AuthSubject.subscribe(
+    this.authSubscription = this.authService.AuthSubject.subscribe(
       (u: boolean) => {
         this.isAuth = u;
 
@@ -40,7 +40,7 @@ authSubscription = new Subscription;
   }
 
   onSignOut(){
-    this.productSevice.SignOutUser();
+    this.authService.SignOut();
   }
 
 }
