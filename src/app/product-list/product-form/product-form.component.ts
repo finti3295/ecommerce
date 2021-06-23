@@ -58,9 +58,10 @@ export class ProductFormComponent implements OnInit {
     const newProduct = new Product(title, content, price, this.actualUser.userId);
      //console.log("url ",newProduct);
     if (this.selectedFiles && this.selectedFiles.length > 0) {
-      this.onUploadFile(this.selectedFiles.item(0))
+      // this.onUploadFile(this.selectedFiles.item(0))
 
       newProduct.photo = this.fileUrl;
+      console.log('photo '+ newProduct.photo );
     }
     this.productService.createNewProduct(newProduct);
     this.router.navigate(['/products']);
@@ -82,25 +83,33 @@ export class ProductFormComponent implements OnInit {
       if (file) {
         this.currentFile = file;
 
-        this.productService.uploadFile(this.currentFile);
+        this.productService.uploadFile(this.currentFile).then(
+          (u:any) => {
+            this.fileUrl = u;
+            this.fileIsUploading = false;
+            this.fileUploaded = true;
+            console.log('upload fileUrl '+  this. fileUrl );
+          }
+        );
 
       }
     }
   }
 
-  onUploadFile(file: File | null) {
-    //console.log('onUploadFile');
-    if (file == null) return;
-    this.fileIsUploading = true;
-    this.productService.uploadFile(file).then(
-      (u: any) => {
-        this.fileUrl = u;
-        this.fileIsUploading = false;
-        this.fileUploaded = true;
-      }
-    );
+  // onUploadFile(file: File | null) {
+  //   //console.log('onUploadFile');
+  //   if (file == null) return;
+  //   this.fileIsUploading = true;
+  //   this.productService.uploadFile(file).then(
+  //     (u: any) => {
+  //       this.fileUrl = u;
+  //       this.fileIsUploading = false;
+  //       this.fileUploaded = true;
+  //       console.log('onUploadFile fileUrl '+  this. fileUrl );
+  //     }
+  //   );
 
-  }
+  // }
 
 
 
