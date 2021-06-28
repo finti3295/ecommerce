@@ -4,6 +4,8 @@ import { Product } from '../models/product.model';
 import firebase from 'firebase';
 import { Injectable } from '@angular/core';
 import { User } from '../models/user.model';
+import { AngularFireDatabase, AngularFireList } from '@angular/fire/database';
+import { AngularFireStorage } from '@angular/fire/storage';
 import { HttpEvent } from '@angular/common/http';
 
 @Injectable({
@@ -19,8 +21,10 @@ export class ProductsService {
 
   isAuth: boolean = false;
   AuthSubject = new Subject<boolean>();
+  productsRef: string = "/products"
+   basePath = '/uploads';
 
-  constructor() {
+  constructor(private db: AngularFireDatabase, public storage: AngularFireStorage) {
     
 
   }
@@ -122,25 +126,47 @@ export class ProductsService {
   }
 
   saveProducts() {
-    firebase.database().ref('/products').set(this.products);
+    firebase.database().ref(this.productsRef).set(this.products);
   }
 
   getProducts() {
-    console.log('getproducts before'+  this.products.length);
-    firebase.database().ref('/products').on('value',
-      (data) => {
-        this.products = data.val() ? data.val() : [];
+    //console.log('getproducts before'+  this.products.length);
+    firebase.database().ref(this.productsRef).on('value', (snap) => {
+      this.products= [];
+      snap.forEach((child) => {
+        var myP =child.val() as Product;
+        if(child.key)
+                myP.productId = child.key;
+              //  console.log('id'+  myP.productId);
+        this.products.push(myP);
+        // this.products.push({
+        //   _key: child.key,
+        //   ...child.val()
+        // });
+        //console.log('getproducts after'+  this.products.length);
         this.emitProducts();
-        console.log('getproducts after'+  this.products.length);
-      }
-    )
+      });
+    
+    });
+
+    // firebase.database().ref('/products').on('value',
+    //   (data) => {
+    //     // console.log('data'+  data);
+    //      console.log('data.val'+  data.val);
+    //     // console.log('data.json'+  data.toJSON);
+    //     this.products = data.val() ? data.val() : [];
+    //     console.log('getproducts after'+  this.products.length);
+    //     this.emitProducts();
+    //     console.log('getproducts after'+  this.products.length);
+    //   }
+    // )
 
   }
 
-  getSingleProduct(id: number) {
+  getSingleProduct(id: string) {
     return new Promise(
       (resolve, reject) => {
-        firebase.database().ref('/products/' + id).once('value').then(
+        firebase.database().ref(this.productsRef).child(id).once('value').then(
           (data) => {
             resolve(data.val());
           }, (error) => {
@@ -150,6 +176,18 @@ export class ProductsService {
 
       }
     )
+    // return new Promise(
+    //   (resolve, reject) => {
+    //     firebase.database().ref(this.productsRef+'/' + id).once('value').then(
+    //       (data) => {
+    //         resolve(data.val());
+    //       }, (error) => {
+    //         reject(error);
+    //       }
+    //     )
+
+    //   }
+    // )
   }
 
   addLike(p: Product) {
@@ -165,27 +203,42 @@ export class ProductsService {
   }
 
   createNewProduct(newProduct: Product) {
-    console.log(newProduct);
-    this.products.push(newProduct);
-    //console.log(this.posts);
-    this.saveProducts();
-    this.emitProducts();
+    console.log("before "+newProduct.productId);
+
+    // this.products.push(newProduct);
+    //  this.saveProducts();
+    firebase.database().ref(this.productsRef).push().set(newProduct).then(
+   
+        (u) => {
+          console.log("u "+ u);
+          if(u && u.key)
+          newProduct.productId = u.key
+          console.log("after "+newProduct.productId);
+          this.emitProducts();
+        }     
+    );
+
+   //firebase.database().ref().child('products').set(newProduct);
+   this.emitProducts();
+
+   
   }
 
   removeProduct(post: Product) {
     if (post.photo) {
-
-      const storageRef = firebase.storage().refFromURL(post.photo);
-      storageRef.delete().then(
-        () => {
-          console.log("Photo supprimée !");
-        }
-      ).catch(
-        (error) => {
-          console.log('Fichier non trouvé: ' + error);
-        }
-      )
-    }
+      post.photo.forEach(element => {
+        this.deleteFile(element).then(
+          () => {
+            console.log("Photo supprimée !");
+          }
+        ).catch(
+          (error) => {
+            console.log('Fichier non trouvé: ' + error);
+          }
+        )
+});
+     
+    
     const productIndexToRemove = this.products.findIndex(
       (prodEl) => {
         if (prodEl === post) {
@@ -200,8 +253,12 @@ export class ProductsService {
     this.saveProducts();
 
     this.emitProducts();
-  }
+  }}
 
+deleteFile(fileUrl: string){
+  const storageRef = firebase.storage().refFromURL(fileUrl);
+ return storageRef.delete();
+}
 
 
 

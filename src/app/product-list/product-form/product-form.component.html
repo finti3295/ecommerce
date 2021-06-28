@@ -1,62 +1,62 @@
 <div class="row">
-    <div class="col-sm-8 col-sm-offset-2">
-        <h2>Add a product</h2>
-        <form [formGroup]="productForm" (ngSubmit)="onSaveProduct()">
-            <div class="form-group">
-                <label for="title"><Title></Title></label>
-                <input type="text" class="form-control" id="title" formControlName="title">                
-            </div>
-            <div class="form-group">
-                <label for="content">Content</label>
-                <input type="text" class="form-control" id="content" formControlName="content">                
-            </div>
-            <div class="form-group">
-              <label for="price">Price</label>
-              <input type="number" class="form-control" id="price" formControlName="price">                
-          </div>
+  <div class="col-sm-8 col-sm-offset-2">
+    <h2>{{title}}</h2>
+    <form [formGroup]="productForm" (ngSubmit)="onSaveProduct()">
+      <div class="form-group">
+        <label for="title">Title</label>
+        <input type="text" class="form-control" id="title" formControlName="title">
+      </div>
+      <div class="form-group">
+        <label for="content">Content</label>
+        <input type="text" class="form-control" id="content" formControlName="content">
+      </div>
+      <div class="form-group">
+        <label for="price">Price</label>
+        <input type="number" class="form-control" id="price" formControlName="price">
+      </div>
 
-            <div class="form-group">
-                <h4 >Add photo</h4>
-                <input type="file" class="form-control" accept="image/*" (change)="selectFile($event)">  
-          
-            </div>
-            <div class="col-4">
-                <button class="btn btn-success btn-sm" type="button"  [disabled]="!selectedFiles" (click)="upload()">
-                  Upload
-                </button>
-              </div>
-     
-            
-            <div *ngIf="currentFile" class="progress my-3">
-              <div
-                class="progress-bar progress-bar-info progress-bar-striped"
-                role="progressbar"
-                attr.aria-valuenow="{{ progress }}"
-                aria-valuemin="0"
-                aria-valuemax="100"
-                [ngStyle]="{ width: progress + '%' }"
-              >
-                {{ progress }}%
-              </div>
-            </div>
-            
-            <div *ngIf="message" class="alert alert-secondary" role="alert">{{ message }}</div>
-            
-            <div class="card mt-3">
-              <div class="card-header">List of Files</div>
-              <ul
-                class="list-group list-group-flush"
-                *ngFor="let file of fileInfos | async"
-              >
-                <li class="list-group-item">
-                  <a href="{{ file.url }}">{{ file.name }}</a>
-                </li>
-              </ul>
-            </div>
-            <button class="btn btn-success" [disabled]="productForm.invalid || fileIsUploading" type="submit" >
-                Save
-            </button>
-        </form>
-    </div>
-</div> 
+      <div class="form-group">
+        <h4>Add photo</h4>
+        <input type="file" class="form-control" accept="image/*" (change)="selectFile($event)">
 
+      </div>
+      <div class="col-4">
+        <button class="btn btn-success btn-sm mt-1" type="button" [disabled]="!selectedFiles" (click)="uploadFile()">
+          Upload
+        </button>
+      </div>
+
+
+      <div *ngIf="fileIsUploading" class="progress my-3">
+        <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar"
+          attr.aria-valuenow="{{ progress }}" aria-valuemin="0" aria-valuemax="100"
+          [ngStyle]="{ width: progress + '%' }">
+          {{ progress }}%
+        </div>
+      </div>
+
+      <div *ngIf="message" class="alert alert-secondary" role="alert">{{ message }}</div>
+
+      <div class="card mt-1">
+        <div class="card-header">List of Files</div>
+         <ul class="list-group list-group-flush" *ngFor="let file of fileInfos ">
+
+          <li class="list-group-item">
+            <div class="row">
+              <div class="col">
+                <a href="{{ file.url }}">{{ file.name }}</a>
+              </div>
+              <div class="col-auto float-right">
+                <button type="button" class="btn btn-sm btn-danger " (click)="delete(file)">Delete</button>
+              </div>
+            </div>
+
+          </li>
+        </ul>
+      </div>
+      <button class="btn btn-success my-1" [disabled]="productForm.invalid || fileIsUploading" type="submit">
+        Save
+      </button>
+    </form>
+  </div>
+</div>

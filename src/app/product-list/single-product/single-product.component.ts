@@ -50,7 +50,7 @@ export class SingleProductComponent implements OnInit {
    // console.log("url ",this.fileUrl);
     if(this.fileUrl && this.fileUrl !== ''){
       console.log(this.fileUrl);
-      newProduct.photo = this.fileUrl;
+      //newProduct.photo = this.fileUrl;
     }
     this.productService.createNewProduct(newProduct);
     this.router.navigate(['/products']);

@@ -15,12 +15,17 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http'
 import { RouterModule, Routes } from '@angular/router';
 import { BrowserModule } from '@angular/platform-browser';
+import { AdminProductsComponent } from './product-list/admin-products/admin-products.component';
+import { FileUploadService } from './services/upload-service.service';
+import { AngularFireModule } from '@angular/fire';
 
 const appRoutes: Routes = [
   {path: 'auth/signup', component: SignupComponent},
   {path: 'auth/signin', component: SigninComponent},
   {path: 'products',  component: ProductListComponent},
   {path: 'product/new', canActivate: [AuthGuardService],component: ProductFormComponent},
+  {path: 'product/new:p', canActivate: [AuthGuardService],component: ProductFormComponent},
+  {path: 'product/admin/products', component: AdminProductsComponent},
   {path: 'product/view/:id', canActivate: [AuthGuardService],component: SingleProductComponent},
   {path: '', redirectTo: 'products', pathMatch: 'full'},
   {path: '**', redirectTo: 'products'}
@@ -33,10 +38,21 @@ const appRoutes: Routes = [
     SingleProductComponent,
     SigninComponent,
     SignupComponent,
-    HeaderComponent
+    HeaderComponent,
+    AdminProductsComponent
   ],
   imports: [
     BrowserModule,
+    AngularFireModule.initializeApp({
+      apiKey: "AIzaSyCgY-N3hLOCltQq30TQEhaLNyXF9dxXjwo",
+      authDomain: "posts-a6997.firebaseapp.com",
+      databaseURL: "https://posts-a6997-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId: "posts-a6997",
+      storageBucket: "posts-a6997.appspot.com",
+      messagingSenderId: "601468590038",
+      appId: "1:601468590038:web:bc18d2d1ff5980f6873677",
+      measurementId: "G-NK3FJXK5D9"
+    }),
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
@@ -46,7 +62,8 @@ const appRoutes: Routes = [
   providers: [
     AuthService,
     AuthGuardService,
-    ProductsService
+    ProductsService,
+    FileUploadService
   ],
   bootstrap: [AppComponent]
 })

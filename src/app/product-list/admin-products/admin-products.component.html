@@ -1,0 +1,34 @@
+<div class="container">
+
+    <div class="row">
+        <div class="col my-3">
+            <a role="button" class="btn btn-primary " routerLink="/product/new">New Product</a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="table-responsive">
+            <table class="table table-striped table-hover ">
+                <thead>
+                    <th></th>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Price</th>
+                    <th></th>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let f of products">
+                        <td>{{f.productId}}</td>
+                        <td>{{f.title}}</td>
+                        <td>{{f.content}}</td>
+                        <td>{{f.price}}</td>
+                        <td>
+                            <a [routerLink]="['/product/new']" [queryParams]="{id: f.productId}" >Edit</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>

@@ -2,34 +2,12 @@
     <div class="container">
 
         <div class="row">
-            <!-- <h5 class="card-title">{{products.length}}</h5> -->
-            <!-- <div class="card" style="width: 18rem;">
-                <img src="..." class="card-img-top" alt="...">
-                <div class="card-body">
-                  <h5 class="card-title">Card title</h5>
-                  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                  <a href="#" class="btn btn-primary">Go somewhere</a>
-                </div>
-              </div> -->
-
-
-
-
-
-
 
             <div class="col-md-4" *ngFor="let product of products">
-                <div   class="card mb-4 shadow-sm">
-                    <img src="{{product.photo}}"  alt="{{product.title}}" preserveAspectRatio="xMidYMid slice"
+                <div  *ngIf="product.photo" class="card mb-4 shadow-sm">
+                    <img src="{{product.photo[0]}}"  alt="{{product.title}}" preserveAspectRatio="xMidYMid slice"
                     class="bd-placeholder-img card-img-top" width="100%" height="225" >
-                    <!-- <svg class="bd-placeholder-img card-img-top" width="100%" height="225"
-                        xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false"
-                        role="img" aria-label="Placeholder: Thumbnail">
-                        <title>{{product.title}}</title>
-                   
-                        <rect width="100%" height="100%" fill="#55595c" /><text x="50%" y="50%" fill="#eceeef"
-                            dy=".3em">Thumbnail</text>
-                    </svg> -->
+
                     <div class="card-body">
                         <h5 class="card-title">{{product.title}}</h5>
                         <p class="card-text">{{product.content}}</p>
@@ -46,37 +24,3 @@
             </div>
         </div>
     </div>
-
-
-<!-- <div class="container-fluid">
-   
-
-    <ul *ngFor="let post of products"  class="w-100">
-        <li class="list-group-item  ">
-            <div class="clearfix">
-                <div class="float-left">
-                    <h4>{{ post.title }} {{post.created_at}} {{post.loveIts}}</h4>
-                </div>
-                <div class="float-right">
-                    <p>Mis à jour : {{ post.created_at | date: 'short' }}</p>
-                </div>
-            </div>
-            <div class="row">
-                <p>
-                    {{post.content}}
-                </p>
-            </div>
-            <div class="row">
-                <button class="btn btn-sm btn-success mx-1" (click)="addLike()">
-                    Love it
-                </button>
-                <button class="btn btn-sm btn-danger mx-1" (click)="removeLike()">
-                    Don't love it!!
-                </button>
-            </div>
-        </li>
-    </ul>
-
-
-
-</div> -->

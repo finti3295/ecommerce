@@ -1,7 +1,8 @@
 export class Product{
-    photo:string = "";
+    photo:string[] = [];
     loveIts: number = 0;
     created_at:Date = new Date();
+    productId: string = ""
    
     
         constructor(public title:string,public content:string, public price:number, public  created_by:string ){}
